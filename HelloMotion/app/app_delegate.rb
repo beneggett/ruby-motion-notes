@@ -7,17 +7,22 @@ class AppDelegate
     # navigationController = UINavigationController.alloc.initWithRootViewController(rootViewController)
 
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+    @user = User.load
+    @user ||= User.new(id: "1001", name: "BenJammin", email: "beneggett@gmail.com", phone: '801-946-1510')
+    @user_controller = UserController.alloc.initWithUser(@user)
+    @nav_controller =  UINavigationController.alloc.initWithRootViewController(@user_controller)
+    @window.rootViewController = @nav_controller
     @window.makeKeyAndVisible
-    controller = ColorsController.alloc.initWithNibName(nil, bundle:nil)
-    nav_controller = UINavigationController.alloc.initWithRootViewController(controller)
-    tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
-    top_controller = ColorDetailController.alloc.initWithColor(UIColor.purpleColor)
-    top_controller.title = "Top Color"
-    top_controller.edgesForExtendedLayout = UIRectEdgeNone
-    top_nav_controller = UINavigationController.alloc.initWithRootViewController(top_controller)
-    tab_controller.viewControllers = [nav_controller, top_nav_controller]
+    # controller = ColorsController.alloc.initWithNibName(nil, bundle:nil)
+    # nav_controller = UINavigationController.alloc.initWithRootViewController(controller)
+    # tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
+    # top_controller = ColorDetailController.alloc.initWithColor(UIColor.purpleColor)
+    # top_controller.title = "Top Color"
+    # top_controller.edgesForExtendedLayout = UIRectEdgeNone
+    # top_nav_controller = UINavigationController.alloc.initWithRootViewController(top_controller)
+    # tab_controller.viewControllers = [nav_controller, top_nav_controller]
 
-    @window.rootViewController  = tab_controller
+    # @window.rootViewController  = tab_controller
     # @window.backgroundColor = UIColor.grayColor
 
 
@@ -160,5 +165,9 @@ class AppDelegate
         cancelButtonTitle: "OK",
         otherButtonTitles: nil).show
     end
+  end
+
+  def applicationDidEnterBackground(application)
+    @user.save
   end
 end
